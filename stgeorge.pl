@@ -30,7 +30,10 @@ $m->submit_form(
 
 $m->submit_form(
     form_name => 'accountDetailForm',
-    fields => {dispatchCommand => 'downloadButton'}
+    fields => {
+        exportFileFormat => 'QIF',
+        dispatchCommand => 'downloadButton'
+    }
 );
 
 print $m->content();
