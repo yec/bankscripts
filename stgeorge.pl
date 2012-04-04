@@ -1,26 +1,34 @@
 #!/usr/bin/perl
-use WWW::Mechanize;
 
-$userid = '';
-$securitynumber = '';
-$password = '';
-$accountpos = 3; # The position of the account on the my accounts page
+use WWW::Mechanize;
+require 'bankconfig.pm';
+
+use strict;
+use warnings;
 
 # Login url
-$url = 'https://ibanking.stgeorge.com.au/InternetBanking/welcome.jsp';
+my $url = 'https://ibanking.stgeorge.com.au/InternetBanking/welcome.jsp';
+
+my %config = BankConfig::config();
 
 my $m = WWW::Mechanize->new();
+
 $m->get($url);
-$m->form_name('logonForm');
-$m->field('userId', $userid);
-$m->field('securityNumber', $securitynumber);
-$m->field('password', $password);
-$response = $m->submit();
-#print $response->content();
+
+$m->submit_form(
+    form_name => 'logonForm',
+    fields => {
+        'userId' => $config{'userid'},
+        'securityNumber' => $config{'securitynumber'},
+        'password' => $config{'password'},
+    }
+);
+
+print $m->content();
 
 $m->form_name('splashScreenForm');
 $m->submit();
-$m->follow_link( url_regex => qr/viewAccountDetails/i, n => $accountpos );
+$m->follow_link( url_regex => qr/viewAccountDetails/i, n => $config{'accountpos'} );
 #print $m->content();
 
 $m->submit_form(
