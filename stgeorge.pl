@@ -24,9 +24,9 @@ $m->submit_form(
     }
 );
 
-
-$m->form_name('splashScreenForm');
-$m->submit();
+# Use when there is a splash screen
+#$m->form_name('splashScreenForm');
+#$m->submit();
 $m->follow_link( url_regex => qr/viewAccountDetails/i, n => $config{'accountpos'} );
 #print $m->content();
 
@@ -38,7 +38,7 @@ $m->submit_form(
 $m->submit_form(
     form_name => 'accountDetailForm',
     fields => {
-        exportFileFormat => 'QIF',
+        exportFileFormat => 'CSV',
         dispatchCommand => 'downloadButton'
     }
 );
